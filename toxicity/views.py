@@ -68,7 +68,7 @@ def textAnalysis(text):
     l=[]
     l.append(text)
     text = np.array(l)
-
+    print(text)
     # arr = np.array()
     # arr.append(text)
     # text = arr

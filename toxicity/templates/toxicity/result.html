@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
 <style>
 body,h1 {font-family: "Raleway", sans-serif}
 body, html {height: 100%}
@@ -22,44 +21,34 @@ body, html {height: 100%}
 
 <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
   <div class="w3-display-topleft w3-padding-large w3-xlarge">
-NITK </div>
+Contributors: Manan and Arqum  </div>
   <div class="w3-display-middle">
     <h1 class="w3-jumbo w3-animate-top">
-Upload Image:)
+       <div style="margin-top:-3em;">
+        Toxic Category: <br>
+        {{final_result}} <br>
+        </div>
+    </h1>
 
-<div class="row">
-  <div class="col-sm-6">
-    <form action="/toxicity/" method="POST" enctype="multipart/form-data" >{% csrf_token %}
-          <input class="form-control"id='inputImage' name="image" type="file"/><br><br>
-          <button type="submit">submit</button>
-      </form>
-  </div><br>
-  <div class="col-sm-6">
-    upload text:)
-    <form action="/toxicity/" method="POST" enctype="multipart/form-data" >{% csrf_token %}
-      
-          <textarea class="form-control"id='inputImage' name="text" rows="2" cols="10" type="text" >
-    </textarea>
-          <button type="submit">submit</button>
-      </form>
+
+
+
+
+
+
+<br><br><br><br><br><br>
+    <hr class="w3-border-grey" style="margin:auto;width:40%">
+    <p class="w3-large w3-center" style="font-size:300em"><div style="font-size: 2em">Predicted Text out of Image:<br><br>{{text}}</p>
   </div>
 </div>
-
-
-
-
-    </h1>
-    <hr class="w3-border-grey" style="margin:auto;width:40%">
-    <p class="w3-large w3-center">ready to see the magic?!</p>
-  </div>
-
   <link rel="stylesheet" href="{% static 'generatecaption/particle.css' %}">
 <script src="{% static 'generatecaption/particle.js' %}"></script>
 
 
-
+<br><br><br>
   <div class="w3-display-bottomleft w3-padding-large">
-  &copy Manan and Arqum
+    &copy Manan And Arqum
+    <br>
   </div>
 </div>
 

@@ -9,6 +9,9 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import load_model
 import pickle
+import tensorflow as tf
+model = load_model('model.h5')
+graph = tf.get_default_graph()
 # Create your views here.
 
 def index(request):
@@ -19,9 +22,18 @@ def index(request):
         )
         image.save()
         images = request.FILES.get('image')
-        text = tesseract(images)
-        print(text)
-        textAnalysis(text)
+        input_text = request.POST.get('text')
+        text =" "
+        final_result=" "
+        print(input_text)
+        print(images)
+        if input_text!=None:
+            final_result = textAnalysis(input_text)
+            text = input_text
+        elif images!=" ":    
+            text = tesseract(images)
+            final_result = textAnalysis(text)
+        return render(request,"toxicity/result.html",{"final_result":final_result,"text":text})
     return render(request,"toxicity/index.html")
 
 
@@ -54,34 +66,33 @@ def textAnalysis(text):
     tokenized_test = tokenizer.texts_to_sequences(text)
 
     X_test = pad_sequences(tokenized_test, maxlen=maxlen)   
+    global graph,model
+    with graph.as_default():
 
-    model = load_model('model.h5')
-
-    y_pred = model.predict(X_test)
-    print(y_pred)
-    list_t=[]
-    for i in range(6):
-        if y_pred[i]>=0.5:
-            if i==0:
-                list_t.append("toxic")
-            elif i==1:
-                list_t.append("severe toxic")
-            elif i==2:
-                list_t.append("obscene")
-            elif i==3:
-                list_t.append("threat")
-            elif i==4:
-                list_t.append("insult")
-            else:
-                list_t.append("identity hate")
-    ans="The content is "
-    for i in range(len(list_t)):
-        ans=ans+list_t[i]
-        if i!=len(list_t)-1:
-            ans=ans+"," 
-
-    print(ans)
-
-    print(y_pred)
-    return ans
-    # "toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"
+        y_pred = model.predict(X_test)
+        print(y_pred)
+        list_t=[]
+        for i in range(6):
+            if y_pred[0][i]>=0.5:
+                if i==0:
+                    list_t.append("toxic")
+                elif i==1:
+                    list_t.append("severe toxic")
+                elif i==2:
+                    list_t.append("obscene")
+                elif i==3:
+                    list_t.append("threat")
+                elif i==4:
+                    list_t.append("insult")
+                else:
+                    list_t.append("identity hate")
+        ans="The content is "
+        for i in range(len(list_t)):
+            ans=ans+list_t[i]
+            if i!=len(list_t)-1:
+                ans=ans+"," 
+        if(len(list_t)==0):
+            ans = ans + "not at all toxic or lies under any of the toxic categories"
+        
+        return ans
+        # "toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"
